@@ -51,7 +51,18 @@ function App() {
     });
   }
 
-  console.log(projectsState);
+  function handleShowSelectedProject(projectId) {
+    setProjectsState((previousState) => {
+      return {
+        ...previousState,
+        selectedProjectId: projectId,
+      };
+    });
+  }
+
+  let selectedProject = projectsState.projects.find(
+    (project) => project.id === projectsState.selectedProjectId
+  );
 
   let content;
   if (projectsState.selectedProjectId === null) {
@@ -63,6 +74,8 @@ function App() {
     );
   } else if (projectsState.selectedProjectId === undefined) {
     content = <NoProjectSelected onAddProject={handleStartAddProject} />;
+  } else {
+    content = <ProjectPage project={selectedProject} />;
   }
 
   return (
@@ -70,10 +83,10 @@ function App() {
       <SideBar
         projects={projectsState.projects}
         onAddProject={handleStartAddProject}
+        onShowProject={handleShowSelectedProject}
       />
       {content}
       <Modal></Modal>
-      {/* <ProjectPage title="Test" description="description" dueDate="today" /> */}
     </main>
   );
 }
