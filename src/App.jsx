@@ -2,6 +2,7 @@ import SideBar from "./components/SideBar";
 import NewProject from "./components/NewProject";
 import NoProjectSelected from "./components/NoProjectSelected";
 import ProjectPage from "./components/ProjectPage";
+import Modal from "./components/Modal";
 
 import { useRef, useState } from "react";
 
@@ -50,36 +51,6 @@ function App() {
     });
   }
 
-  // function handleSaveProject() {
-  //   console.log("projects:", projects);
-  //   console.log("title:", projectTitle);
-  //   console.log("descr:", projectDescription);
-  //   console.log("dueDate:", projectDueDate);
-
-  //   let oldArray = [];
-  //   if (projects.length > 1) {
-  //     oldArray = { ...projects };
-  //   }
-
-  //   const newElement = {
-  //     title: projectTitle,
-  //     description: projectDescription,
-  //     dueDate: projectDueDate,
-  //   };
-  //   oldArray.push(newElement);
-
-  //   console.log("oldArray:", oldArray);
-  //   setProjects(oldArray);
-  //   // setProjects((prevProject) => {
-  //   //   return {
-  //   //     ...prevProject,
-  //   //     oldArray,
-  //   //   };
-  //   // });
-
-  //   // console.log("Save button pressed", props);
-  // }
-
   console.log(projectsState);
 
   let content;
@@ -101,6 +72,7 @@ function App() {
         onAddProject={handleStartAddProject}
       />
       {content}
+      <Modal></Modal>
       {/* <ProjectPage title="Test" description="description" dueDate="today" /> */}
     </main>
   );
