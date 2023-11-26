@@ -1,9 +1,7 @@
 import noProjectImg from "../assets/no-projects.png";
 import Button from "./Button";
 
-export default function NoProjectSelected({ onShowProject }) {
-  const btnClasses =
-    "px-4 py-2 text-xs md:text-base rounded-md bg-stone-700 text-stone-400 hover:bg-stone-600 hover:text-stone-100";
+export default function NoProjectSelected({ onAddProject }) {
 
   return (
     <div className="mt-24 text-center w-2/3">
@@ -18,7 +16,7 @@ export default function NoProjectSelected({ onShowProject }) {
       <p className="text-stone-400 mb-4">
         Select a project or get started with a new one
       </p>
-      <Button onClick={onShowProject}>Create new project</Button>
+      <Button onClick={onAddProject}>Create new project</Button>
     </div>
   );
 }

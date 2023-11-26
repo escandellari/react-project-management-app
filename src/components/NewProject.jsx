@@ -1,10 +1,25 @@
+import { useRef } from "react";
 import Input from "./Input";
 
-export default function NewProject({
-  onSaveProject,
-  onCancelProject,
-  onChangeValue,
-}) {
+export default function NewProject({ onSaveProject, onCancelProject }) {
+  const projectTitle = useRef();
+  const projectDesc = useRef();
+  const projectDueDate = useRef();
+
+  function handleSave() {
+    const enteredTitle = projectTitle.current.value;
+    const enteredDesc = projectDesc.current.value;
+    const enteredDueDate = projectDueDate.current.value;
+
+    // TODO validation
+
+    onSaveProject({
+      title: enteredTitle,
+      description: enteredDesc,
+      dueDate: enteredDueDate,
+    });
+  }
+
   return (
     <div className="w-[35rem] mt-16">
       <menu className="flex items-center justify-end gap-4 my-4">
@@ -18,7 +33,7 @@ export default function NewProject({
         </li>
         <li>
           <button
-            onClick={onSaveProject}
+            onClick={handleSave}
             className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950"
           >
             Save
@@ -26,49 +41,10 @@ export default function NewProject({
         </li>
       </menu>
       <div>
-        <Input
-          label="Title"
-          onChange={(event) => onChangeValue("title", event.target.value)}
-        />
-        <Input
-          isTextArea
-          label="Description"
-          onChange={(event) => onChangeValue("description", event.target.value)}
-        />
-        <Input
-          label="Due Date"
-          onChange={(event) => onChangeValue("dueDate", event.target.value)}
-          type="date"
-        />
+        <Input label="Title" ref={projectTitle} />
+        <Input isTextArea label="Description" ref={projectDesc} />
+        <Input label="Due Date" type="date" ref={projectDueDate} />
       </div>
     </div>
-    // <dialog
-    //   ref={createProjectRef}
-    //   // className="mt-24 text-center w-1/3"
-    //   className="backdrop:bg-stone-900/90 p-4 rounded-md shadow-md"
-    // >
-    //   {/* <form method="dialog" className="mt-4 text-right">
-    //   </form> */}
-    //   <button
-    //     onClick={dontSubmit}
-    //     className="text-stone-800 hover:text-stone-950"
-    //   >
-    //     Cancel
-    //   </button>
-    //   <button
-    //     onClick={() =>
-    //       onSaveProject(
-    //         projectTitle.current.value,
-    //         projectDescription.current.value,
-    //         projectDueDate.current.value
-    //       )
-    //     }
-    //     className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950"
-    //   >
-    //     Save
-    //   </button>
-    // </dialog>
-    // <div className="mt-24 text-center w-2/3">
-    // </div>
   );
 }

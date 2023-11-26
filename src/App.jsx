@@ -12,80 +12,95 @@ const PROJECT_DATA = {
 };
 
 function App() {
-  const [projects, setProjects] = useState([]);
-  const [showAddProject, setShowAddProject] = useState(false);
+  const [projectsState, setProjectsState] = useState({
+    selectedProjectId: undefined,
+    projects: [],
+  });
 
-  const [projectTitle, setProjectTitle] = useState();
-  const [projectDescription, setProjectDescription] = useState();
-  const [projectDueDate, setProjectDueDate] = useState();
-
-  const dialog = useRef();
-
-  // if (showAddProject) {
-  //   dialog.current.open();
-  // }
-  function handleChangeValue(inputIdentifier, value) {
-    switch (inputIdentifier) {
-      case "title":
-        setProjectTitle(value);
-      case "description":
-        setProjectDescription(value);
-      case "dueDate":
-        setProjectDueDate(value);
-    }
+  function handleStartAddProject() {
+    setProjectsState((previousState) => {
+      return {
+        ...previousState,
+        selectedProjectId: null,
+      };
+    });
   }
 
-  function handleAddProject() {
-    setShowAddProject(true);
+  function handleAddProject(projectData) {
+    setProjectsState((previousState) => {
+      const newProject = {
+        ...projectData,
+        id: Math.random(),
+      };
+
+      return {
+        ...previousState,
+        selectedProjectId: undefined,
+        projects: [...previousState.projects, newProject],
+      };
+    });
   }
 
   function handleCancelProject() {
-    console.log("handleCancelProject");
-    setShowAddProject(false);
+    setProjectsState((previousState) => {
+      return {
+        ...previousState,
+        selectedProjectId: undefined,
+      };
+    });
   }
 
-  function handleSaveProject() {
-    console.log("projects:", projects);
-    console.log("title:", projectTitle);
-    console.log("descr:", projectDescription);
-    console.log("dueDate:", projectDueDate);
+  // function handleSaveProject() {
+  //   console.log("projects:", projects);
+  //   console.log("title:", projectTitle);
+  //   console.log("descr:", projectDescription);
+  //   console.log("dueDate:", projectDueDate);
 
-    let oldArray = [];
-    if (projects.length > 1) {
-      oldArray = { ...projects };
-    }
+  //   let oldArray = [];
+  //   if (projects.length > 1) {
+  //     oldArray = { ...projects };
+  //   }
 
-    const newElement = {
-      title: projectTitle,
-      description: projectDescription,
-      dueDate: projectDueDate,
-    };
-    oldArray.push(newElement);
+  //   const newElement = {
+  //     title: projectTitle,
+  //     description: projectDescription,
+  //     dueDate: projectDueDate,
+  //   };
+  //   oldArray.push(newElement);
 
-    console.log("oldArray:", oldArray);
-    setProjects(oldArray);
-    // setProjects((prevProject) => {
-    //   return {
-    //     ...prevProject,
-    //     oldArray,
-    //   };
-    // });
+  //   console.log("oldArray:", oldArray);
+  //   setProjects(oldArray);
+  //   // setProjects((prevProject) => {
+  //   //   return {
+  //   //     ...prevProject,
+  //   //     oldArray,
+  //   //   };
+  //   // });
 
-    // console.log("Save button pressed", props);
+  //   // console.log("Save button pressed", props);
+  // }
+
+  console.log(projectsState);
+
+  let content;
+  if (projectsState.selectedProjectId === null) {
+    content = (
+      <NewProject
+        onSaveProject={handleAddProject}
+        onCancelProject={handleCancelProject}
+      />
+    );
+  } else if (projectsState.selectedProjectId === undefined) {
+    content = <NoProjectSelected onAddProject={handleStartAddProject} />;
   }
 
   return (
     <main className="h-screen my-8 flex gap-8">
-      <SideBar projects={projects} onAddProject={handleAddProject} />
-      {showAddProject ? (
-        <NewProject
-          onSaveProject={handleSaveProject}
-          onCancelProject={handleCancelProject}
-          onChangeValue={handleChangeValue}
-        />
-      ) : (
-        <NoProjectSelected onShowProject={handleAddProject} />
-      )}
+      <SideBar
+        projects={projectsState.projects}
+        onAddProject={handleStartAddProject}
+      />
+      {content}
       {/* <ProjectPage title="Test" description="description" dueDate="today" /> */}
     </main>
   );
